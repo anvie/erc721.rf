@@ -1,6 +1,6 @@
 # ERC-721 Reframe Source
 
-This is [Reframe](https://github.com/ansvia/reframe) source for creating ERC-721 Solidity Smart Contract.
+This is [Reframe](https://github.com/ansvia/reframe) source to build ERC-721 Solidity Smart Contract in no time.
 
 ## Usage
 
