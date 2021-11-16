@@ -1,0 +1,40 @@
+[reframe]
+name = "ERC721"
+author = "anvie"
+min_version = "0.3.0"
+
+[project]
+name = "ERC721"
+version = "0.1.0"
+ignore_dirs = [
+    "target", "build"
+]
+
+finish_text = """Usage:
+
+    $ cd $name_kebab_case$
+
+Test:
+
+    $ brownie test
+
+Deploy:
+
+    $ brownie run scripts/deploy.py
+"""
+
+[[param]]
+description = { ask = "Description ?", default = "My ERC-721 Smart contract" }
+
+[[param]]
+author_name = { ask = "Author name?", default="Author" }
+
+[[param]]
+author_email = { ask = "Author email?", default="author@example.com" }
+
+[[param]]
+token_code = { ask = "Token code?", default="TOKN" }
+
+[[param]]
+max_supply = { ask = "Max supply? (Unit)", default="8000" }
+
