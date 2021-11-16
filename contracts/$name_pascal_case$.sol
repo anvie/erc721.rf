@@ -17,17 +17,20 @@ contract $name_pascal_case$ is
     // using SafeMath for uint32;
     using Counters for Counters.Counter;
 
+    uint256 public constant maxSupply = $param.max_supply$;
+
     Counters.Counter private _idGen;
 
     string public baseTokenURI;
 
     event ItemMinted(uint256 indexed tokenId);
 
-    constructor()
+    constructor(string memory _baseTokenURI)
         ERC721("$name$", "$param.token_code$")
     {
         _setRoot(_msgSender());
         _setAdmin(_msgSender());
+        _idGen.reset();
     }
 
     modifier onlyAdminOrOwner() {
@@ -47,13 +50,21 @@ contract $name_pascal_case$ is
     }
 
     function mint(address to) external returns(uint256) {
-        uint256 tokenId = _idGen.current();
-        _safeMint(to, tokenId);
         _idGen.increment();
+        uint256 tokenId = _idGen.current();
+
+        require(tokenId <= maxSupply, "max supply exceeded");
+
+        _safeMint(to, tokenId);
+
         emit ItemMinted(tokenId);
+
         return tokenId;
     }
 
+    function totalSupply() external view returns(uint256) {
+        return _idGen.current();
+    }
 
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;

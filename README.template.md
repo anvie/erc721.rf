@@ -1,6 +1,6 @@
 # $name$
 
-$name$ is ERC-721 based smart contract.
+$param.description$
 
 ## Prerequisites
 
