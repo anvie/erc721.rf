@@ -14,6 +14,10 @@ finish_text = """Usage:
 
     $ cd $name_kebab_case$
 
+Install prerequisites:
+
+    $ pip install -r requirements.txt
+
 Test:
 
     $ brownie test
