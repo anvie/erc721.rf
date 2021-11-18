@@ -11,7 +11,7 @@ def isolate(fn_isolation):
     pass
 
 @pytest.fixture(scope="module")
-def $name_snake_case$($name_pascal_case$, accounts):
-    _$name_snake_case$ = $name_pascal_case$.deploy("https://$name_snake_case$.com/metadata/", {'from': accounts[0]})
+def $name_snake_case$($name_pascal_case$Test, accounts):
+    _$name_snake_case$ = $name_pascal_case$Test.deploy("https://$name_snake_case$.com/metadata/", {'from': accounts[0]})
     return _$name_snake_case$
 

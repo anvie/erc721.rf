@@ -1,4 +1,6 @@
 
-MAX_SUPPLY = $param.max_supply$
+# this supposed for testing only
+# see scripts/test.py for details
+MAX_SUPPLY = 10
 
 UNIT = 10 ** 18

@@ -15,7 +15,7 @@ Install with: `npm install -g ganache-cli`
 ## Test
 
 ```
-$ brownie test
+$ brownie run scripts/test
 ```
 
 ## Deploy

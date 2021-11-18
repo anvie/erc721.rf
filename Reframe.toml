@@ -20,7 +20,7 @@ Install prerequisites:
 
 Test:
 
-    $ brownie test
+    $ brownie scripts/test.py
 
 Deploy:
 
