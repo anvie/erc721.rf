@@ -23,6 +23,6 @@ def admin(accounts):
 
 @pytest.fixture(scope="module")
 def $name_snake_case$($name_pascal_case$Test, root, admin):
-    _$name_snake_case$ = $name_pascal_case$Test.deploy("https://$name_snake_case$.com/metadata/", root, admin, {'from': root})
+    _$name_snake_case$ = $name_pascal_case$Test.deploy("https://$name_snake_case$.com/meta/", root, admin, {'from': root})
     return _$name_snake_case$
 

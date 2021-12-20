@@ -28,6 +28,7 @@ contract $name_pascal_case$ is
     constructor(string memory _baseTokenURI, address root, address admin)
         ERC721("$name$", "$param.token_code$")
     {
+        baseTokenURI = _baseTokenURI;
         _setRoot(root);
         _setAdmin(admin);
         _idGen.reset();
