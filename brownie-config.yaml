@@ -49,6 +49,6 @@ tests:
   $name_snake_case$_address: ${$name_shout_snake_case$_ADDRESS}
 
 wallets:
-  from_key: ${PRIVATE_KEY}
-  from_mnemonic: ${MNEMONIC}
-  # You'd have to change the accounts.add to accounts.from_mnemonic to use from_mnemonic
+  root_key: ${ROOT_PRIVATE_KEY}
+  admin_key: ${ADMIN_PRIVATE_KEY}
+

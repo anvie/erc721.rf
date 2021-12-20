@@ -25,11 +25,11 @@ contract $name_pascal_case$ is
 
     event ItemMinted(uint256 indexed tokenId);
 
-    constructor(string memory _baseTokenURI)
+    constructor(string memory _baseTokenURI, address root, address admin)
         ERC721("$name$", "$param.token_code$")
     {
-        _setRoot(_msgSender());
-        _setAdmin(_msgSender());
+        _setRoot(root);
+        _setAdmin(admin);
         _idGen.reset();
     }
 

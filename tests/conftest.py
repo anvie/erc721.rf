@@ -10,8 +10,19 @@ def isolate(fn_isolation):
     # https://eth-brownie.readthedocs.io/en/v1.10.3/tests-pytest-intro.html#isolation-fixtures
     pass
 
+
 @pytest.fixture(scope="module")
-def $name_snake_case$($name_pascal_case$Test, accounts):
-    _$name_snake_case$ = $name_pascal_case$Test.deploy("https://$name_snake_case$.com/metadata/", {'from': accounts[0]})
+def root(accounts):
+    acc = accounts.add(config['wallets']['root_key'])
+    return acc
+
+@pytest.fixture(scope="module")
+def admin(accounts):
+    acc = accounts.add(config['wallets']['admin_key'])
+    return acc
+
+@pytest.fixture(scope="module")
+def $name_snake_case$($name_pascal_case$Test, root, admin):
+    _$name_snake_case$ = $name_pascal_case$Test.deploy("https://$name_snake_case$.com/metadata/", root, admin, {'from': root})
     return _$name_snake_case$
 
