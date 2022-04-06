@@ -29,12 +29,14 @@ def test_total_supply_increased($name_snake_case$, accounts, idx):
         $name_snake_case$.mint(accounts[3], {"from": accounts[3]})
     assert $name_snake_case$.totalSupply() == idx
 
-@pytest.mark.parametrize("idx", range(1, 10))
-def test_token_enumerate($name_snake_case$, accounts, idx):
-    assert $name_snake_case$.totalSupply() == 0
-    for i in range(0, idx):
-        $name_snake_case$.mint(accounts[3], {"from": accounts[3]})
-        assert $name_snake_case$.tokenByIndex(i) == i + 1
+# Test code for ERC721Enumerable
+# uncomment this code if your contract use ERC721Enumerable extension
+#@pytest.mark.parametrize("idx", range(1, 10))
+#def test_token_enumerate($name_snake_case$, accounts, idx):
+#    assert $name_snake_case$.totalSupply() == 0
+#    for i in range(0, idx):
+#        $name_snake_case$.mint(accounts[3], {"from": accounts[3]})
+#        assert $name_snake_case$.tokenByIndex(i) == i + 1
 
 def test_base_uri($name_snake_case$, admin):
     assert $name_snake_case$.baseTokenURI() == "https://$name_snake_case$.one/meta/"
