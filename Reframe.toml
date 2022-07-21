@@ -18,11 +18,11 @@ Install prerequisites:
 
     $ pip install -r requirements.txt
 
-Edit .env to configure the keys.
-
 Test:
 
     $ brownie run scripts/test.py
+
+Edit .env to configure the keys.
 
 Deploy:
 
