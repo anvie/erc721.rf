@@ -8,11 +8,11 @@ import pytest
 import brownie
 
 
-def test_root_admin($name_snake_case$, root, admin):
-    assert $name_snake_case$.root() == root
+def test_owner_admin($name_snake_case$, owner, admin):
+    assert $name_snake_case$.owner() == owner
     assert $name_snake_case$.admin() == admin
 
-def test_supports_interface($name_snake_case$, root, admin):
+def test_supports_interface($name_snake_case$, owner, admin):
     assert $name_snake_case$.supportsInterface("0x01ffc9a7") == True
     assert $name_snake_case$.supportsInterface("0x80ac58cd") == True
     assert $name_snake_case$.supportsInterface("0xffffffff") == False

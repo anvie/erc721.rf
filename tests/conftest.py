@@ -12,11 +12,11 @@ def isolate(fn_isolation):
 
 
 @pytest.fixture(scope="module")
-def root(accounts):
-    root_key = config['wallets']['root_key']
-    if not root_key:
+def owner(accounts):
+    owner_key = config['wallets']['owner_key']
+    if not owner_key:
         return accounts[0]
-    acc = accounts.add(root_key)
+    acc = accounts.add(owner_key)
     return acc
 
 @pytest.fixture(scope="module")
@@ -28,7 +28,7 @@ def admin(accounts):
     return acc
 
 @pytest.fixture(scope="module")
-def $name_snake_case$($name_pascal_case$Test, root, admin):
-    _$name_snake_case$ = $name_pascal_case$Test.deploy("https://$name_snake_case$.one/meta/", root, admin, {'from': root})
+def $name_snake_case$($name_pascal_case$Test, owner, admin):
+    _$name_snake_case$ = $name_pascal_case$Test.deploy("https://$name_snake_case$.one/meta/", admin, {'from': owner})
     return _$name_snake_case$
 

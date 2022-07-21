@@ -4,12 +4,13 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./HasAdmin.sol";
-import "./HasRoot.sol";
+
 
 contract $name_pascal_case$ is
     ERC721,
-    HasRoot,
+    Ownable,
     HasAdmin
 {
     using Counters for Counters.Counter;
@@ -22,28 +23,23 @@ contract $name_pascal_case$ is
 
     event ItemMinted(uint256 indexed tokenId);
 
-    constructor(string memory _baseTokenURI, address root, address admin)
+    constructor(string memory _baseTokenURI, address admin)
         ERC721("$name$", "$param.token_code$")
     {
         baseTokenURI = _baseTokenURI;
-        _setRoot(root);
         _setAdmin(admin);
         _idGen.reset();
     }
 
     modifier onlyAdminOrOwner() {
         require(
-            _isAdmin(_msgSender()) || _isRoot(_msgSender()),
-            "Only root or admin can set daily aging rate"
+            _isAdmin(_msgSender()) || owner() == _msgSender(),
+            "Only owner or admin can set daily aging rate"
         );
         _;
     }
 
-    function changeRoot(address newRoot) external onlyRoot {
-        _setRoot(newRoot);
-    }
-
-    function changeAdmin(address newAdmin) external onlyRoot {
+    function changeAdmin(address newAdmin) external onlyOwner {
         _setAdmin(newAdmin);
     }
 
@@ -68,7 +64,7 @@ contract $name_pascal_case$ is
         return baseTokenURI;
     }
 
-    function setBaseURI(string memory baseURI) public onlyRoot {
+    function setBaseURI(string memory baseURI) public onlyOwner {
         baseTokenURI = baseURI;
     }
 }
