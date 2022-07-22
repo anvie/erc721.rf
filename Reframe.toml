@@ -44,3 +44,6 @@ token_code = { ask = "Token code?", default="TOKN" }
 [[param]]
 max_supply = { ask = "Max supply? (Unit)", default="8000" }
 
+[[param]]
+project_id = { ask = "Project ID", default="0" }
+
