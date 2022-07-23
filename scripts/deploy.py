@@ -14,7 +14,7 @@ def main():
     print("using deployer key:", deployer.address)
 
     print("Deploying $name$...")
-    contract = $name_pascal_case$.deploy(BASE_URL, owner_address, owner_address, {'from': deployer})
+    contract = $name_pascal_case$.deploy(BASE_URL, owner_address, owner_address, {'from': deployer}, publish_source=config['publish_source'])
 
     print("Contract address:", contract.address)
 

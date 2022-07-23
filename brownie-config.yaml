@@ -53,3 +53,4 @@ wallets:
   admin_key: ${ADMIN_PRIVATE_KEY}
   owner_address: ${OWNER_ADDRESS}
 
+publish_source: ${PUBLISH_SOURCE}
