@@ -13,9 +13,11 @@ def test_mint($name_snake_case$, accounts):
     token_id = tx.return_value
     assert $name_snake_case$.ownerOf(token_id) == accounts[1]
 
+# <% if param.with_max_supply %>
 def test_mint_max_supply($name_snake_case$, accounts):
     assert $name_snake_case$.totalSupply() == 0
     assert $name_snake_case$.maxSupply() == MAX_SUPPLY
     with brownie.reverts():
         for i in range(0, MAX_SUPPLY + 1):
             $name_snake_case$.mint(accounts[1], {"from": accounts[0]})
+# <% endif %>

@@ -42,7 +42,10 @@ author_email = { ask = "Author email?", default="author@example.com" }
 token_code = { ask = "Token code?", default="TOKN" }
 
 [[param]]
-max_supply = { ask = "Max supply? (Unit)", default="8000" }
+with_max_supply = { ask = "With max supply?", default="true" }
+
+[[param]]
+max_supply = { ask = "Max supply? (Unit)", default="8000", if="with_max_supply" }
 
 [[param]]
 project_id = { ask = "Project ID", default="0" }

@@ -26,7 +26,9 @@ contract $name_pascal_case$ is
 {
     using Counters for Counters.Counter;
 
+    // <% if param.with_max_supply %>
     uint256 public constant maxSupply = $param.max_supply$;
+    // <% endif %>
 
     Counters.Counter private _idGen;
 
@@ -60,7 +62,9 @@ contract $name_pascal_case$ is
         _idGen.increment();
         uint256 tokenId = _idGen.current();
 
+        // <% if param.with_max_supply %>
         require(tokenId <= maxSupply, "max supply exceeded");
+        // <% endif %>
 
         _safeMint(to, tokenId);
 
