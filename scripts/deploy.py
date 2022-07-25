@@ -19,7 +19,7 @@ def main():
     print("Contract address:", contract.address)
 
     standard_json_input = $name_pascal_case$.get_verification_info()['standard_json_input']
-    abi_file_name = '$name_pascal_case$-$param.project_id$-ABI.json'
+    abi_file_name = '$name_pascal_case$-$param.project_id$-standard-input.json'
     with open(abi_file_name, 'w') as f:
       f.write(json.dumps(standard_json_input))
     print(abi_file_name, "saved.")
