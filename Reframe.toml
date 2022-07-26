@@ -56,4 +56,16 @@ project_id = { ask = "Project ID", default="0" }
 [[param]]
 owner_address = { ask = "Owner address", default="0x0" }
 
+[[param]]
+with_free_minting = { ask = "With free minting?", default="true" }
 
+[[param]]
+with_paid_minting = { ask = "With paid minting?", default="true" }
+with_whitelist_minting = { ask = "With whitelist minting?", default="true" }
+
+[[param]]
+mint_price = { ask = "Mint price? (Unit in ether)", default="0.1", if="with_paid_minting" }
+
+[[present]]
+path="contracts/SigVerifier.sol"
+if="with_whitelist_minting"

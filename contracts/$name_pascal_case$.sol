@@ -13,28 +13,38 @@ pragma solidity ^0.8.0;
  *
  */
 
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./HasAdmin.sol";
 
+// <% if param.with_whitelist_minting %>
+import "./SigVerifier.sol";
+// <% endif %>
 
 contract $name_pascal_case$ is
     ERC721,
     Ownable,
     HasAdmin
+    // <% if param.with_whitelist_minting %>
+    ,SigVerifier
+    // <% endif %>
 {
-    using Counters for Counters.Counter;
 
     // <% if param.with_max_supply %>
     uint256 public constant maxSupply = $param.max_supply$;
     // <% endif %>
+    // <% if param.with_paid_minting %>
+    uint256 public mintPrice = $param.mint_price$ ether;
+    // <% endif %>
+    // <% if param.with_whitelist_minting %>
+    uint32 public totalWhitelistMinted = 0;
+    // <% endif %>
 
-    Counters.Counter private _idGen;
+    uint32 public totalSupply = 0;
 
     string public baseTokenURI;
 
-    event ItemMinted(uint256 indexed tokenId);
+    event Minted(uint256 indexed tokenId, address indexed minter);
 
     constructor(string memory _baseTokenURI, address owner, address admin)
         ERC721("$name$", "$param.token_code$")
@@ -43,7 +53,6 @@ contract $name_pascal_case$ is
 
         transferOwnership(owner);
         _setAdmin(admin);
-        _idGen.reset();
     }
 
     modifier onlyAdminOrOwner() {
@@ -58,9 +67,10 @@ contract $name_pascal_case$ is
         _setAdmin(newAdmin);
     }
 
+    // <% if param.with_free_minting %>
     function mint(address to) external returns(uint256) {
-        _idGen.increment();
-        uint256 tokenId = _idGen.current();
+
+        uint32 tokenId = ++totalSupply;
 
         // <% if param.with_max_supply %>
         require(tokenId <= maxSupply, "max supply exceeded");
@@ -68,14 +78,60 @@ contract $name_pascal_case$ is
 
         _safeMint(to, tokenId);
 
-        emit ItemMinted(tokenId);
+        emit Minted(tokenId, to);
 
         return tokenId;
     }
+    // <% endif %>
 
-    function totalSupply() external view returns(uint256) {
-        return _idGen.current();
+    // <% if param.with_whitelist_minting %>
+    function whitelistMint(
+        address to,
+        uint16 qty,
+        uint64 nonce,
+        bool discount,
+        Sig memory sig
+    ) external payable returns (bool) {
+        require(qty <= 5, "Max 5 NFTs can be minted at a time");
+
+        // <% if param.with_max_supply %>
+        require(totalSupply + qty <= maxSupply, "Total limit reached");
+        // <% endif %>
+
+        uint256 amount = msg.value;
+
+        // <% if param.with_paid_minting %>
+        require(
+            amount >= qty * mintPrice,
+            "Not enough amount to pay"
+        );
+        // <% endif %>
+    
+        require(nonce >= uint64(block.timestamp) / 30, "invalid nonce");
+
+        bytes32 message = sigPrefixed(
+            keccak256(abi.encodePacked(_msgSender(), to, qty, nonce, discount))
+        );
+
+        require(_isSigner(admin(), message, sig), "invalid signature");
+
+        uint32 _totalWhitelistMinted = totalWhitelistMinted;
+        uint32 _totalSupply = totalSupply;
+
+        for (uint32 i = 0; i < qty; i++) {
+            uint256 tokenId = _totalSupply + 1;
+            _safeMint(to, tokenId);
+            emit Minted(tokenId, to);
+            ++_totalWhitelistMinted;
+            ++_totalSupply;
+        }
+
+        totalWhitelistMinted = _totalWhitelistMinted;
+        totalSupply = _totalSupply;
+
+        return true;
     }
+    // <% endif %>
 
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;
@@ -84,4 +140,13 @@ contract $name_pascal_case$ is
     function setBaseURI(string memory baseURI) public onlyOwner {
         baseTokenURI = baseURI;
     }
+
+    // <% if param.with_paid_minting %>
+    function setMintPrice(uint256 price) public onlyOwner {
+        mintPrice = price;
+    }
+    // <% endif %>
+
+
+
 }
