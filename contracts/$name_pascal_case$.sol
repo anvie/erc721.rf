@@ -34,7 +34,7 @@ contract $name_pascal_case$ is
 
     string public baseTokenURI;
 
-    event ItemMinted(uint256 indexed tokenId);
+    event Mint(uint256 indexed tokenId, address indexed minter);
 
     constructor(string memory _baseTokenURI, address owner, address admin)
         ERC721("$name$", "$param.token_code$")
@@ -68,7 +68,7 @@ contract $name_pascal_case$ is
 
         _safeMint(to, tokenId);
 
-        emit ItemMinted(tokenId);
+        emit Mint(tokenId, _msgSender());
 
         return tokenId;
     }
