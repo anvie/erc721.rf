@@ -16,35 +16,34 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./HasAdmin.sol";
-
-// <% if param.with_whitelist_minting %>
+{{#if with_whitelist_minting}}
 import "./SigVerifier.sol";
-// <% endif %>
+{{/if}}
 
 contract $name_pascal_case$ is
     ERC721,
     Ownable,
     HasAdmin
-    // <% if param.with_whitelist_minting %>
+    {{#if with_whitelist_minting}}
     ,SigVerifier
-    // <% endif %>
+    {{/if}}
 {
 
-    // <% if param.with_max_supply %>
+    {{#if with_max_supply}}
     uint256 public constant maxSupply = $param.max_supply$;
-    // <% endif %>
-    // <% if param.with_paid_minting %>
-    uint256 public mintPrice = $param.mint_price$ ether;
-    // <% endif %>
-    // <% if param.with_whitelist_minting %>
+    {{/if}}
+    {{#if with_paid_minting}}
+    uint256 public mintPrice = {{mint_price}} ether;
+    {{/if}}
+    {{#if with_whitelist_minting}}
     uint32 public totalWhitelistMinted = 0;
-    // <% endif %>
+    {{/if}}
 
     uint32 public totalSupply = 0;
 
     string public baseTokenURI;
 
-    event Minted(uint256 indexed tokenId, address indexed minter);
+    event Mint(uint256 indexed tokenId, address indexed minter);
 
     constructor(string memory _baseTokenURI, address owner, address admin)
         ERC721("$name$", "$param.token_code$")
@@ -67,71 +66,79 @@ contract $name_pascal_case$ is
         _setAdmin(newAdmin);
     }
 
-    // <% if param.with_free_minting %>
-    function mint(address to) external returns(uint256) {
+    {{#if with_free_minting}}
+    function mint() external returns(uint256) {
 
         uint32 tokenId = ++totalSupply;
 
-        // <% if param.with_max_supply %>
+        {{#if with_max_supply}}
         require(tokenId <= maxSupply, "max supply exceeded");
-        // <% endif %>
+        {{/if}}
+
+        address to = _msgSender();
 
         _safeMint(to, tokenId);
 
-        emit Minted(tokenId, to);
+        emit Mint(tokenId, to);
 
         return tokenId;
     }
-    // <% endif %>
+    {{/if}}
 
-    // <% if param.with_whitelist_minting %>
-    function whitelistMint(
-        address to,
-        uint16 qty,
-        uint64 nonce,
-        bool discount,
-        Sig memory sig
-    ) external payable returns (bool) {
+
+    function mint(
+        uint16 qty
+        {{#if with_whitelist_minting}},uint64 nonce{{/if}}
+        {{#if with_whitelist_minting}},Sig memory sig{{/if}}
+    ) external {{#if with_paid_minting}}payable{{/if}} returns (bool) {
         require(qty <= 5, "Max 5 NFTs can be minted at a time");
 
-        // <% if param.with_max_supply %>
+        {{#if with_max_supply}}
         require(totalSupply + qty <= maxSupply, "Total limit reached");
-        // <% endif %>
+        {{/if}}
 
+        {{#if with_paid_minting}}
         uint256 amount = msg.value;
-
-        // <% if param.with_paid_minting %>
         require(
             amount >= qty * mintPrice,
             "Not enough amount to pay"
         );
-        // <% endif %>
+        {{/if}}
     
+        {{#if with_whitelist_minting}}
         require(nonce >= uint64(block.timestamp) / 30, "invalid nonce");
 
         bytes32 message = sigPrefixed(
-            keccak256(abi.encodePacked(_msgSender(), to, qty, nonce, discount))
+            keccak256(abi.encodePacked(_msgSender(), to, qty, nonce))
         );
 
         require(_isSigner(admin(), message, sig), "invalid signature");
+        {{/if}}
 
+        {{#if with_whitelist_minting}}
         uint32 _totalWhitelistMinted = totalWhitelistMinted;
+        {{/if}}
         uint32 _totalSupply = totalSupply;
+
+        address to = _msgSender();
 
         for (uint32 i = 0; i < qty; i++) {
             uint256 tokenId = _totalSupply + 1;
             _safeMint(to, tokenId);
-            emit Minted(tokenId, to);
+            emit Mint(tokenId, to);
+            {{#if with_whitelist_minting}}
             ++_totalWhitelistMinted;
+            {{/if}}
             ++_totalSupply;
         }
 
+        {{#if with_whitelist_minting}}
         totalWhitelistMinted = _totalWhitelistMinted;
+        {{/if}}
         totalSupply = _totalSupply;
 
         return true;
     }
-    // <% endif %>
 
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;
@@ -141,11 +148,11 @@ contract $name_pascal_case$ is
         baseTokenURI = baseURI;
     }
 
-    // <% if param.with_paid_minting %>
+    {{#if with_paid_minting}}
     function setMintPrice(uint256 price) public onlyOwner {
         mintPrice = price;
     }
-    // <% endif %>
+    {{/if}}
 
 
 
