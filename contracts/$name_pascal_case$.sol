@@ -109,7 +109,7 @@ contract $name_pascal_case$ is
         require(nonce >= uint64(block.timestamp) / 30, "invalid nonce");
 
         bytes32 message = sigPrefixed(
-            keccak256(abi.encodePacked(_msgSender(), to, qty, nonce))
+            keccak256(abi.encodePacked(_msgSender(), qty, nonce))
         );
 
         require(_isSigner(admin(), message, sig), "invalid signature");
