@@ -61,6 +61,8 @@ with_free_minting = { ask = "With free minting?", default="true" }
 
 [[param]]
 with_paid_minting = { ask = "With paid minting?", default="true" }
+
+[[param]]
 with_whitelist_minting = { ask = "With whitelist minting?", default="true" }
 
 [[param]]

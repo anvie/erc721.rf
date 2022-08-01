@@ -45,13 +45,17 @@ contract $name_pascal_case$ is
 
     event Mint(uint256 indexed tokenId, address indexed minter);
 
-    constructor(string memory _baseTokenURI, address owner, address admin)
+    constructor(string memory _baseTokenURI, address owner, address admin {{#if with_paid_minting}}, uint256 _mintPrice{{/if}})
         ERC721("$name$", "$param.token_code$")
     {
         baseTokenURI = _baseTokenURI;
 
         transferOwnership(owner);
         _setAdmin(admin);
+
+        {{#if with_paid_minting}}
+        mintPrice = _mintPrice;
+        {{/if}}
     }
 
     modifier onlyAdminOrOwner() {
